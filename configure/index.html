@@ -363,8 +363,14 @@
                     // Erfolg!
                     apiKeyInput.style.borderColor = '#28a745';
                     
-                    // Generiere die Addon-URL (ohne API-Key!)
-                    const addonUrl = data.manifestUrl;
+                    // Verwende die Addon-URL vom Server (erzwinge http://)
+                    let addonUrl = data.manifestUrl;
+                    // Stelle sicher dass es http:// ist (nicht https://)
+                    addonUrl = addonUrl.replace('https://', 'http://');
+                    if (!addonUrl.startsWith('http://')) {
+                        addonUrl = 'http://' + addonUrl;
+                    }
+                    
                     const stremioUrl = `stremio://${addonUrl.replace('http://', '')}`;
                     
                     // Aktualisiere die Links
