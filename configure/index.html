@@ -296,6 +296,11 @@
             <strong>✅ Perfekt!</strong><br>
             Dein API-Key wurde erfolgreich verifiziert und gespeichert!
             <br><br>
+            <div style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                <strong>🆔 Deine eindeutige Addon-ID:</strong><br>
+                <code id="userId" style="font-size: 14px; color: #667eea;"></code>
+            </div>
+            <br>
             Klicke auf den Button unten, um das Addon zu installieren:
             <br><br>
             <a href="#" id="installLink" class="install-link">📦 In Stremio öffnen</a>
@@ -372,6 +377,9 @@
                     }
                     
                     const stremioUrl = `stremio://${addonUrl.replace('http://', '')}`;
+                    
+                    // Zeige User-ID
+                    document.getElementById('userId').textContent = data.userId;
                     
                     // Aktualisiere die Links
                     installLink.href = stremioUrl;

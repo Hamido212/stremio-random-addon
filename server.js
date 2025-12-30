@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const fetch = require('node-fetch');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 7000;
@@ -35,6 +36,11 @@ app.use((req, res, next) => {
 app.use(express.static('public'));
 app.use(express.json());
 
+// UUID-Generierung
+function generateUserId() {
+    return crypto.randomBytes(8).toString('hex');
+}
+
 // Hilfsfunktionen für Config
 function loadConfig() {
     try {
@@ -45,7 +51,7 @@ function loadConfig() {
     } catch (error) {
         log('Fehler beim Laden der Config: ' + error.message, 'error');
     }
-    return { apiKey: null };
+    return { users: {} };
 }
 
 function saveConfig(config) {
@@ -169,8 +175,18 @@ app.post('/api/configure', async (req, res) => {
         });
     }
     
-    // Speichere den API-Key
-    const config = { apiKey: apiKey.trim() };
+    // Generiere eindeutige User-ID
+    const userId = generateUserId();
+    
+    // Lade bestehende Config und füge neuen User hinzu
+    const config = loadConfig();
+    if (!config.users) config.users = {};
+    
+    config.users[userId] = {
+        apiKey: apiKey.trim(),
+        createdAt: new Date().toISOString()
+    };
+    
     const saved = saveConfig(config);
     
     if (!saved) {
@@ -184,25 +200,29 @@ app.post('/api/configure', async (req, res) => {
     const host = req.get('host') || `127.0.0.1:${PORT}`;
     const protocol = req.protocol || 'http';
     
+    log(`Neue User-ID erstellt: ${userId}`, 'info');
+    
     res.json({ 
         success: true, 
         message: 'API-Key erfolgreich verifiziert und gespeichert!',
-        manifestUrl: `${protocol}://${host}/manifest.json`
+        userId: userId,
+        manifestUrl: `${protocol}://${host}/${userId}/manifest.json`
     });
 });
 
-// Manifest ohne API-Key in URL
-app.get('/manifest.json', (req, res) => {
+// Manifest mit User-ID
+app.get('/:userId/manifest.json', (req, res) => {
+    const userId = req.params.userId;
     const config = loadConfig();
     
-    if (!config.apiKey) {
-        return res.status(400).json({ 
-            error: 'Addon nicht konfiguriert. Bitte besuche /configure' 
+    if (!config.users || !config.users[userId]) {
+        return res.status(404).json({ 
+            error: 'User-ID nicht gefunden. Bitte besuche /configure um einen neuen API-Key zu konfigurieren.' 
         });
     }
     
     const manifest = {
-        id: 'de.tmdb.random.addon',
+        id: `de.tmdb.random.addon.${userId}`,
         version: '1.0.0',
         name: '🎲 Zufalls-Entdecker (TMDB)',
         description: 'Entdecke zufällige beliebte Filme aus TMDB',
@@ -218,30 +238,33 @@ app.get('/manifest.json', (req, res) => {
         ]
     };
     
+    log(`Manifest bereitgestellt für User: ${userId}`, 'info');
     res.json(manifest);
 });
 
-// Catalog Handler
-app.get('/catalog/:type/:id.json', async (req, res) => {
+// Catalog Handler mit User-ID
+app.get('/:userId/catalog/:type/:id.json', async (req, res) => {
+    const userId = req.params.userId;
     const config = loadConfig();
     
-    if (!config.apiKey) {
-        log('Catalog-Anfrage ohne API-Key', 'warn');
-        return res.status(400).json({ 
+    if (!config.users || !config.users[userId]) {
+        log(`Catalog-Anfrage mit ungültiger User-ID: ${userId}`, 'warn');
+        return res.status(404).json({ 
             metas: [],
-            error: 'API-Key nicht konfiguriert' 
+            error: 'User-ID nicht gefunden' 
         });
     }
     
+    const userConfig = config.users[userId];
     const type = req.params.type;
     const id = req.params.id;
     
     if (type === 'movie' && id === 'tmdb_random_discover') {
         try {
-            const movies = await getRandomMovies(config.apiKey, 10);
+            const movies = await getRandomMovies(userConfig.apiKey, 10);
             const metas = movies.map(convertTMDBToMeta);
             
-            log(`Catalog bereitgestellt: ${metas.length} Filme`, 'info');
+            log(`Catalog bereitgestellt für User ${userId}: ${metas.length} Filme`, 'info');
             res.json({ metas });
         } catch (error) {
             log('Fehler im Catalog Handler: ' + error.message, 'error');
@@ -260,9 +283,10 @@ app.get('/', (req, res) => {
 // Health Check Endpoint
 app.get('/health', (req, res) => {
     const config = loadConfig();
+    const userCount = config.users ? Object.keys(config.users).length : 0;
     res.json({
         status: 'ok',
-        configured: !!config.apiKey,
+        users: userCount,
         uptime: process.uptime(),
         timestamp: new Date().toISOString()
     });
@@ -277,18 +301,14 @@ app.use((err, req, res, next) => {
 // Server starten
 app.listen(PORT, '0.0.0.0', () => {
     const config = loadConfig();
+    const userCount = config.users ? Object.keys(config.users).length : 0;
     console.log('\n🎬 ═══════════════════════════════════════════════════════');
     console.log('   Stremio TMDB Random Addon gestartet!');
     console.log('   ═══════════════════════════════════════════════════════');
     console.log(`   📝 Konfiguration: http://127.0.0.1:${PORT}/configure`);
-    console.log(`   🔗 Manifest-URL:  http://127.0.0.1:${PORT}/manifest.json`);
+    console.log(`   🔗 Manifest-URL:  http://127.0.0.1:${PORT}/{user-id}/manifest.json`);
     console.log(`   💚 Health Check:  http://127.0.0.1:${PORT}/health`);
     console.log('   ═══════════════════════════════════════════════════════');
-    
-    if (config.apiKey) {
-        console.log('   ✅ API-Key ist konfiguriert');
-    } else {
-        console.log('   ⚠️  Bitte konfiguriere zuerst deinen API-Key');
-    }
+    console.log(`   👥 Konfigurierte Benutzer: ${userCount}`);
     console.log('   ═══════════════════════════════════════════════════════\n');
 });
