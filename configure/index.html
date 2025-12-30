@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎲 Zufalls-Entdecker - Konfiguration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 64px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .info-box p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info-box a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .info-box a:hover {
+            text-decoration: underline;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            opacity: 0.6;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .install-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .install-link:hover {
+            background: #218838;
+        }
+
+        .steps {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .steps h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .steps ol {
+            padding-left: 20px;
+        }
+
+        .steps li {
+            color: #666;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🎲🎬</div>
+            <h1>Zufalls-Entdecker</h1>
+            <p class="subtitle">Entdecke jeden Tag neue beliebte Filme aus TMDB</p>
+        </div>
+
+        <div class="info-box">
+            <h3>📋 TMDB API-Key benötigt</h3>
+            <p>
+                Um dieses Addon zu nutzen, benötigst du einen kostenlosen API-Key von TMDB.
+                <br><br>
+                <strong>So erhältst du deinen API-Key:</strong><br>
+                1. Registriere dich auf <a href="https://www.themoviedb.org/signup" target="_blank">themoviedb.org</a><br>
+                2. Gehe zu deinen <a href="https://www.themoviedb.org/settings/api" target="_blank">Account-Einstellungen → API</a><br>
+                3. Beantrage einen API-Key (Option: Developer)<br>
+                4. Kopiere deinen API-Key und füge ihn unten ein
+            </p>
+        </div>
+
+        <form id="configForm">
+            <div class="form-group">
+                <label for="apiKey">🔑 TMDB API-Key:</label>
+                <input 
+                    type="text" 
+                    id="apiKey" 
+                    name="apiKey" 
+                    placeholder="Füge hier deinen TMDB API-Key ein..."
+                    required
+                >
+                <div class="error" id="error">Bitte gib einen gültigen API-Key ein</div>
+            </div>
+
+            <button type="submit" class="button" id="installBtn">
+                🚀 API-Key verifizieren & installieren
+            </button>
+        </form>
+
+        <div class="error-message" id="errorMessage">
+            <strong>❌ Fehler</strong><br>
+            <span id="errorText"></span>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <strong>✅ Perfekt!</strong><br>
+            Dein API-Key wurde erfolgreich verifiziert und gespeichert!
+            <br><br>
+            Klicke auf den Button unten, um das Addon zu installieren:
+            <br><br>
+            <a href="#" id="installLink" class="install-link">📦 In Stremio öffnen</a>
+            <br><br>
+            <small>Falls der Link nicht funktioniert, kopiere diese URL und öffne sie in Stremio:<br>
+            <code id="manifestUrl" style="font-size: 12px; word-break: break-all;"></code></small>
+        </div>
+
+        <div class="steps">
+            <h3>📖 Anleitung</h3>
+            <ol>
+                <li>Trage deinen TMDB API-Key oben ein</li>
+                <li>Klicke auf "API-Key verifizieren & installieren"</li>
+                <li>Der API-Key wird automatisch überprüft und sicher gespeichert</li>
+                <li>Stremio öffnet sich automatisch und installiert das Addon</li>
+                <li>Fertig! Du findest den Katalog "🎲 Zufalls-Entdecker" in Stremio</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('configForm');
+        const apiKeyInput = document.getElementById('apiKey');
+        const installBtn = document.getElementById('installBtn');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const installLink = document.getElementById('installLink');
+        const manifestUrl = document.getElementById('manifestUrl');
+        const errorDiv = document.getElementById('error');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const apiKey = apiKeyInput.value.trim();
+            
+            // Einfache Validierung
+            if (!apiKey || apiKey.length < 10) {
+                errorDiv.classList.add('show');
+                apiKeyInput.style.borderColor = '#dc3545';
+                return;
+            }
+
+            errorDiv.classList.remove('show');
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+            
+            // Button deaktivieren und Ladeanimation zeigen
+            installBtn.disabled = true;
+            installBtn.innerHTML = '<span class="spinner"></span> Verifiziere API-Key...';
+            
+            try {
+                // Sende API-Key zur Verifizierung an Server
+                const response = await fetch('/api/configure', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ apiKey })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Erfolg!
+                    apiKeyInput.style.borderColor = '#28a745';
+                    
+                    // Generiere die Addon-URL (ohne API-Key!)
+                    const addonUrl = data.manifestUrl;
+                    const stremioUrl = `stremio://${addonUrl.replace('http://', '')}`;
+                    
+                    // Aktualisiere die Links
+                    installLink.href = stremioUrl;
+                    manifestUrl.textContent = addonUrl;
+                    
+                    // Zeige Erfolgsmeldung
+                    successMessage.classList.add('show');
+                    
+                    // Scroll zur Nachricht
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    
+                    // Optional: Öffne automatisch nach kurzer Verzögerung
+                    setTimeout(() => {
+                        if (confirm('API-Key wurde erfolgreich verifiziert! Möchtest du das Addon jetzt in Stremio öffnen?')) {
+                            window.location.href = stremioUrl;
+                        }
+                    }, 1000);
+                } else {
+                    // Fehler
+                    apiKeyInput.style.borderColor = '#dc3545';
+                    errorText.textContent = data.message || 'Ein unbekannter Fehler ist aufgetreten';
+                    errorMessage.classList.add('show');
+                    errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            } catch (error) {
+                console.error('Fehler bei der Verifizierung:', error);
+                errorText.textContent = 'Verbindungsfehler. Stelle sicher, dass der Server läuft.';
+                errorMessage.classList.add('show');
+                apiKeyInput.style.borderColor = '#dc3545';
+            } finally {
+                // Button wieder aktivieren
+                installBtn.disabled = false;
+                installBtn.innerHTML = '🚀 API-Key verifizieren & installieren';
+            }
+        });
+
+        // Entferne Fehler beim Tippen
+        apiKeyInput.addEventListener('input', function() {
+            if (apiKeyInput.value.trim().length >= 10) {
+                errorDiv.classList.remove('show');
+                apiKeyInput.style.borderColor = '#e0e0e0';
+                errorMessage.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

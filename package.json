@@ -1,0 +1,34 @@
+{
+  "name": "stremio-random-addon",
+  "version": "1.0.0",
+  "description": "Stremio Addon mit TMDB Integration für zufällige Filme",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "pm2:start": "pm2 start ecosystem.config.json",
+    "pm2:stop": "pm2 stop stremio-addon",
+    "pm2:restart": "pm2 restart stremio-addon",
+    "pm2:logs": "pm2 logs stremio-addon",
+    "docker:build": "docker build -t stremio-addon .",
+    "docker:run": "docker run -d -p 7000:7000 --name stremio-addon -v $(pwd)/config.json:/app/config.json stremio-addon",
+    "docker:stop": "docker stop stremio-addon && docker rm stremio-addon"
+  },
+  "keywords": [
+    "stremio",
+    "addon",
+    "tmdb",
+    "movies",
+    "random"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^4.22.1",
+    "node-fetch": "^2.7.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
