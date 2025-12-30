@@ -5,9 +5,10 @@ Entdecke bei jedem Aufruf 10 neue zufällige Filme aus den Top 500 TMDB-Filmen.
 ## ✨ Features
 
 - 🎬 10 zufällige beliebte Filme bei jedem Aufruf
-- 🔐 Sichere API-Key-Verwaltung
+- 🔐 Sichere API-Key-Verwaltung mit eindeutiger User-ID
 - 🎨 Einfache Web-Konfiguration
 - 🌐 TMDB-Integration mit Postern und Beschreibungen
+- 👥 Multi-User-Support (jeder Benutzer hat seine eigene ID)
 
 ## 🚀 Installation
 
@@ -46,6 +47,22 @@ ports:
 2. Gehe zu [Account-Einstellungen → API](https://www.themoviedb.org/settings/api)
 3. Beantrage API-Key (Developer)
 4. Kopiere den **v3 API-Key**
+
+## 📋 Für öffentliche Addon-Listen
+
+Wenn du das Addon in öffentlichen Listen wie `stremio-addons.net` hinzufügen möchtest:
+
+**Manifest-URL für Listen:**
+```
+http://deine-domain.com:7000/manifest.json
+```
+
+Diese URL zeigt ein "configurationRequired" Manifest, das Benutzer zur Konfigurationsseite führt.
+
+**Nach der Konfiguration:**
+- Jeder Benutzer erhält eine eindeutige ID
+- Seine persönliche Manifest-URL: `http://deine-domain.com:7000/{user-id}/manifest.json`
+- Diese URL ist nur für ihn und enthält seinen API-Key
 
 ## 🐛 Problemlösung
 
@@ -98,7 +115,7 @@ stremio-random-addon/
 ├── docker-compose.yml     # Docker Config
 ├── configure/
 │   └── index.html        # Konfigurationsseite
-└── config.json           # API-Key (wird erstellt)
+└── config.json           # API-Keys (wird erstellt)
 ```
 
 ## 📝 Lizenz

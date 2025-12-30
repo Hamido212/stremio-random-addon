@@ -210,7 +210,30 @@ app.post('/api/configure', async (req, res) => {
     });
 });
 
-// Manifest mit User-ID
+// Basis-Manifest für öffentliche Addon-Listen (ohne User-ID)
+app.get('/manifest.json', (req, res) => {
+    const host = req.get('host') || `127.0.0.1:${PORT}`;
+    const protocol = req.protocol || 'http';
+    
+    const manifest = {
+        id: 'de.tmdb.random.addon',
+        version: '1.0.0',
+        name: '🎲 Zufalls-Entdecker (TMDB)',
+        description: 'Entdecke zufällige beliebte Filme aus TMDB - Konfiguration erforderlich',
+        resources: [],
+        types: ['movie'],
+        catalogs: [],
+        behaviorHints: {
+            configurable: true,
+            configurationRequired: true
+        }
+    };
+    
+    log('Basis-Manifest bereitgestellt (nicht konfiguriert)', 'info');
+    res.json(manifest);
+});
+
+// Manifest mit User-ID (konfiguriert)
 app.get('/:userId/manifest.json', (req, res) => {
     const userId = req.params.userId;
     const config = loadConfig();
@@ -235,7 +258,11 @@ app.get('/:userId/manifest.json', (req, res) => {
                 name: '🎲 Zufalls-Entdecker',
                 extra: [{ name: 'skip', isRequired: false }]
             }
-        ]
+        ],
+        behaviorHints: {
+            configurable: true,
+            configurationRequired: false
+        }
     };
     
     log(`Manifest bereitgestellt für User: ${userId}`, 'info');
