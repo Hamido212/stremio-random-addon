@@ -180,10 +180,14 @@ app.post('/api/configure', async (req, res) => {
         });
     }
     
+    // Verwende die tatsächliche Host-Adresse aus dem Request
+    const host = req.get('host') || `127.0.0.1:${PORT}`;
+    const protocol = req.protocol || 'http';
+    
     res.json({ 
         success: true, 
         message: 'API-Key erfolgreich verifiziert und gespeichert!',
-        manifestUrl: `http://127.0.0.1:${PORT}/manifest.json`
+        manifestUrl: `${protocol}://${host}/manifest.json`
     });
 });
 

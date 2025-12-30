@@ -1,6 +1,4 @@
 # Docker Compose für Stremio Random Addon
-version: '3.8'
-
 services:
   stremio-addon:
     build: .
