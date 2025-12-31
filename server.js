@@ -149,8 +149,13 @@ function convertTMDBToMeta(movie) {
     };
 }
 
-// Konfigurationsseite
+// Konfigurationsseite (ohne User-ID)
 app.get('/configure', (req, res) => {
+    res.sendFile(path.join(__dirname, 'configure', 'index.html'));
+});
+
+// Konfigurationsseite (mit User-ID - für Re-Konfiguration)
+app.get('/:userId/configure', (req, res) => {
     res.sendFile(path.join(__dirname, 'configure', 'index.html'));
 });
 

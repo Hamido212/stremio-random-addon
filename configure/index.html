@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎲 Zufalls-Entdecker - Konfiguration</title>
+    <title>🎲 Random Discover - Configuration</title>
     <style>
         * {
             margin: 0;
@@ -252,71 +252,71 @@
     <div class="container">
         <div class="header">
             <div class="logo">🎲🎬</div>
-            <h1>Zufalls-Entdecker</h1>
-            <p class="subtitle">Entdecke jeden Tag neue beliebte Filme aus TMDB</p>
+            <h1>Random Discover</h1>
+            <p class="subtitle">Discover new popular movies from TMDB every day</p>
         </div>
 
         <div class="info-box">
-            <h3>📋 TMDB API-Key benötigt</h3>
+            <h3>📋 TMDB API Key Required</h3>
             <p>
-                Um dieses Addon zu nutzen, benötigst du einen kostenlosen API-Key von TMDB.
+                To use this addon, you need a free API key from TMDB.
                 <br><br>
-                <strong>So erhältst du deinen API-Key:</strong><br>
-                1. Registriere dich auf <a href="https://www.themoviedb.org/signup" target="_blank">themoviedb.org</a><br>
-                2. Gehe zu deinen <a href="https://www.themoviedb.org/settings/api" target="_blank">Account-Einstellungen → API</a><br>
-                3. Beantrage einen API-Key (Option: Developer)<br>
-                4. Kopiere deinen API-Key und füge ihn unten ein
+                <strong>How to get your API key:</strong><br>
+                1. Register at <a href="https://www.themoviedb.org/signup" target="_blank">themoviedb.org</a><br>
+                2. Go to your <a href="https://www.themoviedb.org/settings/api" target="_blank">Account Settings → API</a><br>
+                3. Request an API key (Option: Developer)<br>
+                4. Copy your API key and paste it below
             </p>
         </div>
 
         <form id="configForm">
             <div class="form-group">
-                <label for="apiKey">🔑 TMDB API-Key:</label>
+                <label for="apiKey">🔑 TMDB API Key:</label>
                 <input 
                     type="text" 
                     id="apiKey" 
                     name="apiKey" 
-                    placeholder="Füge hier deinen TMDB API-Key ein..."
+                    placeholder="Paste your TMDB API key here..."
                     required
                 >
-                <div class="error" id="error">Bitte gib einen gültigen API-Key ein</div>
+                <div class="error" id="error">Please enter a valid API key</div>
             </div>
 
             <button type="submit" class="button" id="installBtn">
-                🚀 API-Key verifizieren & installieren
+                🚀 Verify & Install
             </button>
         </form>
 
         <div class="error-message" id="errorMessage">
-            <strong>❌ Fehler</strong><br>
+            <strong>❌ Error</strong><br>
             <span id="errorText"></span>
         </div>
 
         <div class="success-message" id="successMessage">
-            <strong>✅ Perfekt!</strong><br>
-            Dein API-Key wurde erfolgreich verifiziert und gespeichert!
+            <strong>✅ Perfect!</strong><br>
+            Your API key has been successfully verified and saved!
             <br><br>
             <div style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0;">
-                <strong>🆔 Deine eindeutige Addon-ID:</strong><br>
+                <strong>🆔 Your unique addon ID:</strong><br>
                 <code id="userId" style="font-size: 14px; color: #667eea;"></code>
             </div>
             <br>
-            Klicke auf den Button unten, um das Addon zu installieren:
+            Click the button below to install the addon:
             <br><br>
-            <a href="#" id="installLink" class="install-link">📦 In Stremio öffnen</a>
+            <a href="#" id="installLink" class="install-link">📦 Open in Stremio</a>
             <br><br>
-            <small>Falls der Link nicht funktioniert, kopiere diese URL und öffne sie in Stremio:<br>
+            <small>If the link doesn't work, copy this URL and open it in Stremio:<br>
             <code id="manifestUrl" style="font-size: 12px; word-break: break-all;"></code></small>
         </div>
 
         <div class="steps">
-            <h3>📖 Anleitung</h3>
+            <h3>📖 Instructions</h3>
             <ol>
-                <li>Trage deinen TMDB API-Key oben ein</li>
-                <li>Klicke auf "API-Key verifizieren & installieren"</li>
-                <li>Der API-Key wird automatisch überprüft und sicher gespeichert</li>
-                <li>Stremio öffnet sich automatisch und installiert das Addon</li>
-                <li>Fertig! Du findest den Katalog "🎲 Zufalls-Entdecker" in Stremio</li>
+                <li>Enter your TMDB API key above</li>
+                <li>Click "Verify & Install"</li>
+                <li>The API key will be automatically verified and securely saved</li>
+                <li>Stremio will open automatically and install the addon</li>
+                <li>Done! You'll find the "🎲 Random Discover" catalog in Stremio</li>
             </ol>
         </div>
     </div>
@@ -350,7 +350,7 @@
             
             // Button deaktivieren und Ladeanimation zeigen
             installBtn.disabled = true;
-            installBtn.innerHTML = '<span class="spinner"></span> Verifiziere API-Key...';
+            installBtn.innerHTML = '<span class="spinner"></span> Verifying API key...';
             
             try {
                 // Sende API-Key zur Verifizierung an Server
@@ -393,26 +393,26 @@
                     
                     // Optional: Öffne automatisch nach kurzer Verzögerung
                     setTimeout(() => {
-                        if (confirm('API-Key wurde erfolgreich verifiziert! Möchtest du das Addon jetzt in Stremio öffnen?')) {
+                        if (confirm('API key successfully verified! Do you want to open the addon in Stremio now?')) {
                             window.location.href = stremioUrl;
                         }
                     }, 1000);
                 } else {
                     // Fehler
                     apiKeyInput.style.borderColor = '#dc3545';
-                    errorText.textContent = data.message || 'Ein unbekannter Fehler ist aufgetreten';
+                    errorText.textContent = data.message || 'An unknown error occurred';
                     errorMessage.classList.add('show');
                     errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
             } catch (error) {
-                console.error('Fehler bei der Verifizierung:', error);
-                errorText.textContent = 'Verbindungsfehler. Stelle sicher, dass der Server läuft.';
+                console.error('Error during verification:', error);
+                errorText.textContent = 'Connection error. Make sure the server is running.';
                 errorMessage.classList.add('show');
                 apiKeyInput.style.borderColor = '#dc3545';
             } finally {
                 // Button wieder aktivieren
                 installBtn.disabled = false;
-                installBtn.innerHTML = '🚀 API-Key verifizieren & installieren';
+                installBtn.innerHTML = '🚀 Verify & Install';
             }
         });
 
